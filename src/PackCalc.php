@@ -114,6 +114,7 @@ class PackCalc
         $candidate = array_shift($vertices);
 
         $this->pruneSmallerVerticesFromGraph($candidate, $vertices);
+        $this->pruneDeadEndsFromGraph($candidate);
 
         return (new BreadthFirst($this->vertexCache[$this->quantity]))->getEdgesTo($candidate);
     }
@@ -140,5 +141,19 @@ class PackCalc
             $vertex->destroy();
             $this->pruneSmallerVerticesFromGraph($candidate, $nextVertices);
         }
+    }
+
+    private function pruneDeadEndsFromGraph(Vertex $candidate)
+    {
+        do {
+            $retraverse = false;
+            /** @var Vertex $vertex */
+            foreach ($this->graph->getVertices() as $vertex) {
+                if ($vertex !== $candidate && $vertex->getEdgesOut()->count() === 0) {
+                    $vertex->destroy();
+                    $retraverse = true;
+                }
+            }
+        } while ($retraverse);
     }
 }
