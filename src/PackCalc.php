@@ -20,6 +20,10 @@ class PackCalc
 
     public function calculate(): array
     {
+        if ($this->quantity === 0) {
+            return [];
+        }
+
         $this->generateGraph();
 
         $packs = array_fill_keys($this->packSizes, 0);
