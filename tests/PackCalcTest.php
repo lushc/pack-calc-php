@@ -25,6 +25,7 @@ final class PackCalcTest extends TestCase
             'prime packs with 32' => [32, [23, 31, 53, 151, 757], [23 => 2]],
             'prime packs with 500' => [500, [23, 31, 53, 151, 757], [23 => 4, 53 => 2, 151 => 2]],
             'prime packs with 758' => [758, [23, 31, 53, 151, 757], [23 => 4, 31 => 2, 151 => 4]],
+            'off by one pack with 500' => [500, [1, 100, 200, 499], [1 => 1, 499 => 1]],
         ];
     }
 }
