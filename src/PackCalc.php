@@ -118,6 +118,7 @@ class PackCalc
 
         $candidate = array_shift($vertices);
 
+        // aid traversal by removing vertices & edges which don't lead to the candidate
         $this->pruneSmallerVerticesFromGraph($candidate, $vertices);
         $this->pruneDeadEndsFromGraph($candidate);
 
