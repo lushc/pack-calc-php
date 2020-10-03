@@ -6,10 +6,15 @@ use Graphp\Graph\Vertex;
 
 class PackCalc
 {
+    /** @var Graph $graph */
     public $graph;
+    /** @var int */
     private $quantity;
+    /** @var int[] */
     private $packSizes;
+    /** @var Vertex[] */
     private $vertexCache;
+    /** @var Vertex[] */
     private $candidates;
 
     public function __construct(int $quantity, array $packSizes)
@@ -29,7 +34,7 @@ class PackCalc
         $packs = array_fill_keys($this->packSizes, 0);
 
         // find the shortest path to the quantity closest to zero, counting pack sizes
-        foreach ($this->getShortestPathToSmallestCandidate() as $edge) {
+        foreach ($this->getShortestPathToClosestCandidate() as $edge) {
             $packs[$edge->getAttribute('weight')]++;
         }
 
@@ -88,10 +93,9 @@ class PackCalc
         });
     }
 
-    private function getShortestPathToSmallestCandidate()
+    private function getShortestPathToClosestCandidate()
     {
         $vertices = $this->candidates;
-        $search = new BreadthFirst($this->vertexCache[$this->quantity]);
 
         if (count($vertices) > 1) {
             // sort by quantity descending
@@ -107,6 +111,34 @@ class PackCalc
             });
         }
 
-        return $search->getEdgesTo(array_shift($vertices));
+        $candidate = array_shift($vertices);
+
+        $this->pruneSmallerVerticesFromGraph($candidate, $vertices);
+
+        return (new BreadthFirst($this->vertexCache[$this->quantity]))->getEdgesTo($candidate);
+    }
+
+    private function pruneSmallerVerticesFromGraph(Vertex $candidate, array $vertices)
+    {
+        /** @var Vertex $vertex */
+        foreach ($vertices as $vertex) {
+            // don't remove a vertex if it's directly linked to the candidate
+            if ($candidate->hasEdgeFrom($vertex)) {
+                continue;
+            }
+
+            // find vertices that have an edge to this one and are still lower than the candidate
+            $nextVertices = $vertex
+                ->getVerticesEdgeFrom()
+                ->getVerticesDistinct()
+                ->getVerticesMatch(function (Vertex $vertex) use ($candidate) {
+                    return $vertex->getAttribute('id') < $candidate->getAttribute('id');
+                })
+                ->getVector();
+
+            // remove this vertex and its edges before continuing up the graph
+            $vertex->destroy();
+            $this->pruneSmallerVerticesFromGraph($candidate, $nextVertices);
+        }
     }
 }
