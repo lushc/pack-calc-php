@@ -5,7 +5,8 @@ use Graphp\GraphViz\GraphViz;
 require_once __DIR__ . '/vendor/autoload.php';
 
 $quantity = $argv[1];
-$packSizes = [250, 500, 1000, 2000, 5000];
+$packSizes = array_map('intval', explode(',', $argv[2]));
+
 $packCalc = new PackCalc($quantity, $packSizes);
 $packsRequired = $packCalc->calculate();
 
