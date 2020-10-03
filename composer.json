@@ -1,0 +1,23 @@
+{
+    "name": "lushc/pack-calc-php",
+    "autoload": {
+        "psr-4": {
+            "": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "": "tests/"
+        }
+    },
+    "require": {
+        "graphp/graph": "dev-master#81eef65 as 1.0.0",
+        "graphp/graphviz": "dev-master"
+    },
+    "authors": [
+        {
+            "name": "Chris Lush",
+            "email": "chris.lush@gmail.com"
+        }
+    ]
+}
