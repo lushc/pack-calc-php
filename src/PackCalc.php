@@ -56,7 +56,7 @@ class PackCalc
 
             // track vertices below zero and stop at this level
             if ($quantity <= 0) {
-                $this->candidates[] = $nextVertex;
+                $this->candidates[$quantity] = $nextVertex;
                 continue;
             }
 
