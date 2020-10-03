@@ -19,5 +19,8 @@
             "name": "Chris Lush",
             "email": "chris.lush@gmail.com"
         }
-    ]
+    ],
+    "require-dev": {
+        "phpunit/phpunit": "^9.4"
+    }
 }
