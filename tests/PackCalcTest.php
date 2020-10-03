@@ -27,6 +27,7 @@ final class PackCalcTest extends TestCase
             'prime packs with 758' => [758, [23, 31, 53, 151, 757], [23 => 4, 31 => 2, 151 => 4]],
             'off by one pack with 500' => [500, [1, 100, 200, 499], [1 => 1, 499 => 1]],
             'edge case pack permutation' => [3100, [200, 300, 1000], [200 => 1, 300 => 3, 1000 => 2]],
+            'prime stress test' => [500000, [23, 31, 53, 151, 757], [23 => 4, 31 => 1, 53 => 2, 151 => 1, 757 => 660]],
         ];
     }
 }

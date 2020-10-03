@@ -55,13 +55,18 @@ class PackCalc
 
         // build a graph of permutations by subtracting packs from quantities
         for ($i = count($this->packSizes); $i >= 1; $i--) {
-            $this->subtractPacks($vertex, array_slice($this->packSizes, 0, $i));
+            $this->subtractPacks($vertex, array_reverse(array_slice($this->packSizes, 0, $i)));
         }
     }
 
     private function subtractPacks(Vertex $vertex, array $packSizes): void
     {
         foreach ($packSizes as $size) {
+            // no need to continue generating permutations if we've found a perfect fit
+            if (isset($this->candidates[0])) {
+                break;
+            }
+
             // find or create a vertex by the subtracted quantity
             $quantity = $vertex->getAttribute('id') - $size;
             $nextVertex = $this->vertexCache[$quantity] ?? $this->graph->createVertex(['id' => $quantity]);
