@@ -24,5 +24,5 @@ Outputs:
 ## Tests
 
 ```
-./vendor/bin/phpunit tests
+./vendor/bin/phpunit tests --testdox
 ```
