@@ -18,9 +18,20 @@ class PackCalc
         $this->packSizes = $packSizes;
     }
 
-    public function calculate(): void
+    public function calculate(): array
     {
         $this->generateGraph();
+
+        $packs = array_fill_keys($this->packSizes, 0);
+
+        // find the shortest path to the quantity closest to zero, counting pack sizes
+        foreach ($this->getShortestPathToSmallestCandidate() as $edge) {
+            $packs[$edge->getAttribute('weight')]++;
+        }
+
+        return array_filter($packs, function (int $count) {
+            return $count > 0;
+        });
     }
 
     private function generateGraph(): void
@@ -31,6 +42,7 @@ class PackCalc
 
         // create the root
         $vertex = $this->graph->createVertex(['id' => $this->quantity]);
+        $this->vertexCache[$this->quantity] = $vertex;
 
         // build a graph of permutations by subtracting packs from quantities
         for ($i = count($this->packSizes); $i >= 1; $i--) {
@@ -70,5 +82,27 @@ class PackCalc
         return $source->getEdges()->hasEdgeMatch(function (Edge $edge) use ($source, $target, $weight) {
             return $edge->getAttribute('weight') === $weight && $edge->isConnection($source, $target);
         });
+    }
+
+    private function getShortestPathToSmallestCandidate()
+    {
+        $vertices = $this->candidates;
+        $search = new BreadthFirst($this->vertexCache[$this->quantity]);
+
+        if (count($vertices) > 1) {
+            // sort by quantity descending
+            usort($vertices, function (Vertex $a, Vertex $b) {
+                $a = $a->getAttribute('id');
+                $b = $b->getAttribute('id');
+
+                if ($a === $b) {
+                    return 0;
+                }
+
+                return $a < $b ? 1 : -1;
+            });
+        }
+
+        return $search->getEdgesTo(array_shift($vertices));
     }
 }
