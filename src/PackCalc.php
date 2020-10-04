@@ -30,13 +30,20 @@ class PackCalc
             return [];
         }
 
-        $this->generateGraph();
-
         $packs = array_fill_keys($this->packSizes, 0);
 
-        // find the shortest path to the quantity closest to zero, counting pack sizes
-        foreach ($this->getShortestPathToClosestCandidate() as $edge) {
-            $packs[$edge->getAttribute('weight')]++;
+        if ($this->packSizeCount === 1) {
+            // round up to nearest pack
+            $size = $this->packSizes[0];
+            $packs[$size] = (int) ceil($this->quantity / $size);
+        } else {
+            // create permutations
+            $this->generateGraph();
+
+            // find the shortest path to the quantity closest to zero, counting pack sizes
+            foreach ($this->getShortestPathToClosestCandidate() as $edge) {
+                $packs[$edge->getAttribute('weight')]++;
+            }
         }
 
         return array_filter($packs, function (int $count) {
