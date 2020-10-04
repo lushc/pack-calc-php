@@ -40,6 +40,7 @@ class PackCalc
             return [];
         }
 
+        sort($this->packSizes);
         $packs = array_fill_keys($this->packSizes, 0);
 
         if ($this->packSizeCount === 1) {

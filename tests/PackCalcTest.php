@@ -28,6 +28,13 @@ final class PackCalcTest extends TestCase
         $packCalc = new PackCalc(0, [0]);
     }
 
+    public function testPackSizesAreSorted(): void
+    {
+        $packCalc = new PackCalc(501, [2000, 500, 1000, 5000, 250]);
+
+        $this->assertEquals(array_keys([250 => 1, 500 => 1]), array_keys($packCalc->calculate()));
+    }
+
     /**
      * Dataset format:
      *
