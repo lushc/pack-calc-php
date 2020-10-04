@@ -6,6 +6,8 @@ use Graphp\Graph\Vertex;
 
 class PackCalc
 {
+    private const HEADROOM_MULTIPLIER = 50;
+
     /** @var Graph $graph */
     public $graph;
     /** @var int */
@@ -48,6 +50,14 @@ class PackCalc
             $size = $this->packSizes[0];
             $packs[$size] = (int) ceil($this->quantity / $size);
         } else {
+            // reduce the problem space when the quantity is far greater than the sum of available pack sizes
+            $permutationClamp = array_sum($this->packSizes) * self::HEADROOM_MULTIPLIER;
+            if ($this->quantity > $permutationClamp) {
+                $largestSize = array_key_last($packs);
+                $packs[$largestSize] = (int) floor(($this->quantity - $permutationClamp) / $largestSize);
+                $this->quantity -= $packs[$largestSize] * $largestSize;
+            }
+
             // create permutations
             $this->generateGraph();
 

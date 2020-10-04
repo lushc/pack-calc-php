@@ -1,6 +1,8 @@
 ## Algorithm overview
 
 1. Start a graph where vertices are quantities and edges are pack sizes
+   - In the case of a single pack size, a graph isn't necessary to calculate the required packs and so we skip to #8
+   - When the quantity exceeds an arbitary threshold (sum of pack sizes * 50) we first reduce the problem space by subtracting as many of the largest packs as possible while still leaving enough headroom to permutate a best fit
 2. Recursively build the graph by subtracting pack sizes from ancestors, starting from the root vertex (initial quantity)
    - Packs are subtracted from the current vertex (quantity) in descending order
    - Either a new vertex is created for the calculated quantity or an existing vertex is located in cache

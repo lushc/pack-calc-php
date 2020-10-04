@@ -63,6 +63,8 @@ final class PackCalcTest extends TestCase
             'zero quantity' => [0, [1], []],
             'negative quantity' => [-1, [1], []],
             'prime stress test' => [500000, [23, 31, 53, 151, 757], [23 => 4, 31 => 1, 53 => 2, 151 => 1, 757 => 660]],
+            'prime stress test with 3 sizes' => [500000, [23, 31, 53], [23 => 2, 31 => 7, 53 => 9429]],
+            'prime stress test with 2 sizes' => [500000, [23, 31], [23 => 27, 31 => 16109]],
         ];
     }
 }
