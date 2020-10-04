@@ -14,6 +14,20 @@ final class PackCalcTest extends TestCase
         $this->assertEquals($expected, $packCalc->calculate());
     }
 
+    public function testNoPackSizes(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        $packCalc = new PackCalc(0, []);
+    }
+
+    public function testInvalidPackSize(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        $packCalc = new PackCalc(0, [0]);
+    }
+
     /**
      * Dataset format:
      *

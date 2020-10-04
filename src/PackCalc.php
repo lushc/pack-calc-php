@@ -19,9 +19,19 @@ class PackCalc
 
     public function __construct(int $quantity, array $packSizes)
     {
+        foreach ($packSizes as $packSize) {
+            if ($packSize <= 0) {
+                throw new InvalidArgumentException('Pack size must be greater than zero');
+            }
+        }
+
         $this->quantity = $quantity;
         $this->packSizes = $packSizes;
         $this->packSizeCount = count($packSizes);
+
+        if ($this->packSizeCount === 0) {
+            throw new InvalidArgumentException('At least one pack size must be provided');
+        }
     }
 
     public function calculate(): array
