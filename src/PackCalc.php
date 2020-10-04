@@ -21,6 +21,7 @@ class PackCalc
     {
         $this->quantity = $quantity;
         $this->packSizes = $packSizes;
+        $this->packSizeCount = count($packSizes);
     }
 
     public function calculate(): array
@@ -54,7 +55,7 @@ class PackCalc
         $this->vertexCache[$this->quantity] = $vertex;
 
         // build a graph of permutations by subtracting packs from quantities
-        for ($i = count($this->packSizes); $i >= 1; $i--) {
+        for ($i = $this->packSizeCount; $i >= 1; $i--) {
             $this->subtractPacks($vertex, array_reverse(array_slice($this->packSizes, 0, $i)));
         }
     }
@@ -62,8 +63,8 @@ class PackCalc
     private function subtractPacks(Vertex $vertex, array $packSizes): void
     {
         foreach ($packSizes as $size) {
-            // no need to continue generating permutations if we've found a perfect fit
-            if (isset($this->candidates[0])) {
+            // stop generating permutations if we've found more paths to 0 than available pack sizes
+            if (isset($this->candidates[0]) && $this->candidates[0]->getEdgesIn()->count() >= $this->packSizeCount) {
                 break;
             }
 
@@ -77,16 +78,16 @@ class PackCalc
                 continue;
             }
 
-            // link the verties by the pack size
+            // link the vertices by the pack size
             $this->graph->createEdgeDirected($vertex, $nextVertex, ['weight' => $size]);
 
-            // track vertices below zero and stop at this level
+            // track vertices which satisfy the required quantity, stopping at this depth
             if ($quantity <= 0) {
                 $this->candidates[$quantity] = $nextVertex;
                 continue;
             }
 
-            // subtract from the next quantity
+            // subtract from the next quantity, increasing depth
             $this->subtractPacks($nextVertex, $packSizes);
         }
     }
