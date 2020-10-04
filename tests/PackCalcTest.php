@@ -14,6 +14,15 @@ final class PackCalcTest extends TestCase
         $this->assertEquals($expected, $packCalc->calculate());
     }
 
+    /**
+     * Dataset format:
+     *
+     * [
+     *  quantity,
+     *  [pack sizes],
+     *  [pack size => expected count]
+     * ]
+     */
     public function packResultProvider(): array
     {
         return [
