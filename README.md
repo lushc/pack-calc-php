@@ -44,3 +44,19 @@ Outputs:
 ```
 ./vendor/bin/phpunit tests --testdox
 ```
+
+## Example graph
+
+Generated with the following parameters:
+
+* 152 quantity
+* 23,31,53,151,757 pack sizes
+
+### Initial graph
+![1_initial_graph.png](https://raw.githubusercontent.com/lushc/pack-calc-php/main/example/1_initial_graph.png?sanitize=true)
+
+### Smaller vertices prune
+![2_smaller_prune.png](https://raw.githubusercontent.com/lushc/pack-calc-php/main/example/2_smaller_prune.png?sanitize=true)
+
+### Dead end vertices prune
+![3_deadend_prune.png](https://raw.githubusercontent.com/lushc/pack-calc-php/main/example/3_deadend_prune.png?sanitize=true)
