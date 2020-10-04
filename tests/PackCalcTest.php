@@ -39,6 +39,8 @@ final class PackCalcTest extends TestCase
             'choose smallest pack count' => [508, [3, 23, 31, 53, 151, 757], [3 => 3, 23 => 2, 151 => 3]],
             'single pack divisible' => [500, [50], [50 => 10]],
             'single pack undivisible' => [500, [33], [33 => 16]],
+            'zero quantity' => [0, [1], []],
+            'negative quantity' => [-1, [1], []],
             'prime stress test' => [500000, [23, 31, 53, 151, 757], [23 => 4, 31 => 1, 53 => 2, 151 => 1, 757 => 660]],
         ];
     }

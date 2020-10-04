@@ -26,7 +26,7 @@ class PackCalc
 
     public function calculate(): array
     {
-        if ($this->quantity === 0) {
+        if ($this->quantity <= 0) {
             return [];
         }
 
