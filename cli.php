@@ -1,13 +1,13 @@
 <?php
 
+require __DIR__ . '/vendor/autoload.php';
+
 use Graphp\GraphViz\GraphViz;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\SingleCommandApplication;
-
-require_once __DIR__ . '/vendor/autoload.php';
 
 (new SingleCommandApplication())
     ->addUsage('Example: cli.php 12001 250 500 1000 2000 5000')
