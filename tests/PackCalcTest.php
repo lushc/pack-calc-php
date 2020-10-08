@@ -18,14 +18,14 @@ final class PackCalcTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
 
-        $packCalc = new PackCalc(0, []);
+        new PackCalc(0, []);
     }
 
     public function testInvalidPackSize(): void
     {
         $this->expectException(InvalidArgumentException::class);
 
-        $packCalc = new PackCalc(0, [0]);
+        new PackCalc(0, [0]);
     }
 
     public function testPackSizesAreSorted(): void

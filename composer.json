@@ -24,5 +24,8 @@
     },
     "require-dev": {
         "phpunit/phpunit": "^9.4"
+    },
+    "scripts": {
+        "tests": "phpunit tests --testdox"
     }
 }
