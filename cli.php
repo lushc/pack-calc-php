@@ -33,7 +33,7 @@ require_once __DIR__ . '/vendor/autoload.php';
         if ($output->isVerbose()) {
             $time = number_format(microtime(true) - $startTime, 3);
             $peakMemory = number_format(memory_get_peak_usage() / (1024 ** 2), 2);
-            $output->writeln("<info>Generated in {$time} seconds with {$peakMemory} MB peak usage</info>");
+            $output->writeln("<info>Finished in {$time} seconds with {$peakMemory} MB peak usage</info>");
         }
 
         if ($packCalc->graph && $input->getOption('viz')) {
