@@ -1,26 +1,48 @@
 <?php
 
 use Graphp\GraphViz\GraphViz;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\SingleCommandApplication;
 
 require_once __DIR__ . '/vendor/autoload.php';
 
-$startTime = microtime(true);
-$quantity = $argv[1];
-$packSizes = array_map('intval', explode(',', $argv[2]));
+(new SingleCommandApplication())
+    ->addUsage('Example: cli.php 12001 250 500 1000 2000 5000')
+    ->addArgument('quantity', InputArgument::REQUIRED, 'How many items need to be sent')
+    ->addArgument('pack_sizes', InputArgument::IS_ARRAY | InputArgument::REQUIRED, 'The available pack sizes (each separated by a space)')
+    ->addOption('viz', null, InputOption::VALUE_NONE, 'Visualise the generated graph with GraphViz')
+    ->setCode(function (InputInterface $input, OutputInterface $output) {
+        $startTime = microtime(true);
+        $quantity = $input->getArgument('quantity');
+        $packSizes = array_map('intval', $input->getArgument('pack_sizes'));
 
-$packCalc = new PackCalc($quantity, $packSizes);
-$packsRequired = $packCalc->calculate();
+        try {
+            $packCalc = new PackCalc($quantity, $packSizes);
+        } catch (InvalidArgumentException $e) {
+            $output->writeln("<error>{$e->getMessage()}</error>");
+            return;
+        }
 
-foreach ($packsRequired as $size => $count) {
-    print "{$count}x $size" . PHP_EOL;
-}
+        foreach ($packCalc->calculate() as $size => $count) {
+            $output->writeln("{$count}x $size");
+        }
 
-$time = number_format(microtime(true) - $startTime, 2);
-$peakMemory = number_format(memory_get_peak_usage() / (1024 ** 2), 2);
+        if ($output->isVerbose()) {
+            $time = number_format(microtime(true) - $startTime, 3);
+            $peakMemory = number_format(memory_get_peak_usage() / (1024 ** 2), 2);
+            $output->writeln("<info>Generated in {$time} seconds with {$peakMemory} MB peak usage</info>");
+        }
 
-print PHP_EOL . "Generated in {$time} seconds with {$peakMemory} MB peak usage";
-
-if ($packCalc->graph) {
-    print PHP_EOL . 'Now visualising the graph...';
-    (new GraphViz())->display($packCalc->graph);
-}
+        if ($packCalc->graph && $input->getOption('viz')) {
+            $output->writeln('<comment>Now visualising the graph... this could take a very long time!</comment>');
+            try {
+                (new GraphViz())->display($packCalc->graph);
+            } catch (Exception $e) {
+                $output->writeln("<error>{$e->getMessage()}</error>");
+            }
+        }
+    })
+    ->run();

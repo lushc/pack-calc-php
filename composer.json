@@ -1,5 +1,11 @@
 {
     "name": "lushc/pack-calc-php",
+    "authors": [
+        {
+            "name": "Chris Lush",
+            "email": "chris.lush@gmail.com"
+        }
+    ],
     "autoload": {
         "psr-4": {
             "": "src/"
@@ -11,15 +17,11 @@
         }
     },
     "require": {
+        "php": ">=7.3.0",
         "graphp/graph": "dev-master#81eef65 as 1.0.0",
-        "graphp/graphviz": "dev-master"
+        "graphp/graphviz": "dev-master",
+        "symfony/console": "^5.1"
     },
-    "authors": [
-        {
-            "name": "Chris Lush",
-            "email": "chris.lush@gmail.com"
-        }
-    ],
     "require-dev": {
         "phpunit/phpunit": "^9.4"
     }
