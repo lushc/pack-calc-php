@@ -81,7 +81,7 @@ The issue here is that the BFS implementation only accounts for shortest path an
 
 #### Permutations vs combinations
 
-The algorithm is generating permutations whereas the end result we're interested in is the combination (with repetition) of pack sizes where order of subtraction no longer matters. As evidenced in the example graph below, the final traversal will be over a number of paths which all result in the combination of `23, 23, 53, 53`.
+The algorithm is generating permutations whereas the end result we're interested in is the combination (with repetition) of pack sizes where order of subtraction no longer matters. Using the [example graph](#example-graph) below as an example, after pruning the traversal happens over a number of paths which can all result in the same combination.
 
 Even with optimisations such as lowering the quantity where permutation starts and pruning the graph we're essentially still brute-forcing a solution, so perhaps a different approach could be to instead calculate the best combination of pack sizes for each integer between "1" and "quantity", using dynamic programming to store previous solutions.
 
@@ -89,7 +89,7 @@ Even with optimisations such as lowering the quantity where permutation starts a
 
 Consider the following:
 
-* `php cli.php 5000001 250 500 1000 2000 5000 -v` finishes in 0.11 seconds with 14.22 MB peak usage
+* `php cli.php 5000001 250 500 1000 2000 5000` finishes in 0.11 seconds with 14.22 MB peak usage
 * `php cli.php 5000001 250 500 1000 2000 5000 10000 20000 50000` finishes in 2.85 seconds with 166.21 MB peak usage
 
 Increasing the number of pack size variations will only further increase the required resources to generate and traverse the graph at large quantities. Within a microservice deployment this is a legitimate concern in terms of runtime and memory constraints.
