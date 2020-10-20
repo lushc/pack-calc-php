@@ -30,7 +30,7 @@ Outputs:
 1x 250
 1x 2000
 2x 5000
-Finished in 0.007 seconds with 2.28 MB peak usag
+Finished in 0.007 seconds with 2.28 MB peak usage
 ```
 
 To visualise the graph used with [GraphViz](https://graphviz.org/) and write an image to this directory (see [example](#example-graph)):
@@ -42,7 +42,7 @@ docker run -it --rm -v $(pwd):/app pack-calc --viz 152 23 31 53 151 757
 ## Unit tests
 
 ```
-docker run -it --rm --entrypoint composer pack-calc tests
+docker run --rm --entrypoint composer pack-calc tests
 ```
 
 Test cases used can be found in tests/PackCalcTest.php
@@ -81,7 +81,7 @@ The issue here is that the BFS implementation only accounts for shortest path an
 
 #### Permutations vs combinations
 
-The algorithm is generating permutations whereas the end result we're interested in is the combination (with repetition) of pack sizes where order of subtraction no longer matters. Using the [example graph](#example-graph) below as an example, after pruning the traversal happens over a number of paths which can all result in the same combination.
+The algorithm is generating permutations whereas the end result we're interested in is the combination (with repetition) of pack sizes where order of subtraction no longer matters. Using the [graph below](#example-graph) as an example, after pruning the traversal happens over a number of paths which all result in the same combination.
 
 Even with optimisations such as lowering the quantity where permutation starts and pruning the graph we're essentially still brute-forcing a solution, so perhaps a different approach could be to instead calculate the best combination of pack sizes for each integer between "1" and "quantity", using dynamic programming to store previous solutions.
 
