@@ -39,7 +39,11 @@ use Symfony\Component\Console\SingleCommandApplication;
         if ($packCalc->graph && $input->getOption('viz')) {
             $output->writeln('<comment>Now visualising the graph... this could take a very long time!</comment>');
             try {
-                (new GraphViz())->display($packCalc->graph);
+                $graphviz = new GraphViz();
+                $image = $graphviz->createImageData($packCalc->graph);
+                $filename = sprintf('%s/%s.png', __DIR__, bin2hex(random_bytes(8)));
+                file_put_contents($filename, $image);
+                $output->writeln("<info>Wrote graph image to {$filename}</info>");
             } catch (Exception $e) {
                 $output->writeln("<error>{$e->getMessage()}</error>");
             }
