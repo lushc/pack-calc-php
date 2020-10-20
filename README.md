@@ -9,40 +9,40 @@ A solution for calculating the number of packs required to satisfy a requested q
 ## Getting started
 
 ```
-composer install
+docker build -t pack-calc .
 ```
 
-[GraphViz](https://graphviz.org/) is needed when generating a graph visualisation.
-
-## CLI
-
-Usage:
+## Usage
 
 ```
-cli.php [options] <quantity> <pack_sizes>...
+docker run -it --rm pack-calc [options] <quantity> <pack_sizes>...
 ```
 
-For example:
+For example, to calculate pack sizes with added runtime and memory usage (`-v` flag):
 
 ```
-php cli.php 12001 250 500 1000 2000 5000
+docker run -it --rm pack-calc -v 12001 250 500 1000 2000 5000
+```
 
 Outputs:
 
+```
 1x 250
 1x 2000
 2x 5000
+Finished in 0.007 seconds with 2.28 MB peak usag
 ```
 
-### Options
+To visualise the graph used with [GraphViz](https://graphviz.org/) and write an image to this directory (see [example](#example-graph)):
 
-Add the `-v` flag to output runtime and memory usage.
-Add the `--viz` flag to visualise the graph used to determine the result.
+```
+docker run -it --rm -v $(pwd):/app pack-calc --viz 152 23 31 53 151 757
+```
 
 ## Unit tests
 
 ```
-composer tests
+docker run -it --rm --entrypoint composer pack-calc tests
 ```
 
 Test cases used can be found in tests/PackCalcTest.php
@@ -102,17 +102,11 @@ Some potential solutions:
 
 ## Example graph
 
-Generated with the following command:
-
-```
-php cli.php 152 23 31 53 151 757 --viz
-```
-
-### Initial graph
+### 1. All permutations
 ![1_initial_graph.png](https://raw.githubusercontent.com/lushc/pack-calc-php/main/example/1_initial_graph.png?sanitize=true)
 
-### Smaller vertices prune
+### 2. Smaller vertices prune
 ![2_smaller_prune.png](https://raw.githubusercontent.com/lushc/pack-calc-php/main/example/2_smaller_prune.png?sanitize=true)
 
-### Dead end vertices prune
+### 3. Dead end vertices prune (final output)
 ![3_deadend_prune.png](https://raw.githubusercontent.com/lushc/pack-calc-php/main/example/3_deadend_prune.png?sanitize=true)
