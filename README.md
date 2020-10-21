@@ -47,7 +47,7 @@ docker run --rm --entrypoint composer pack-calc tests
 
 Test cases used can be found in tests/PackCalcTest.php
 
-### Microservice deployment
+## Microservice deployment
 
 [Bref](https://bref.sh/) and the [Serverless framework](https://serverless.com/) are used for a microservice deployment. To deploy it:
 
