@@ -1,0 +1,7 @@
+vendor/
+example/
+.serverless/
+*.png
+serverless.yml
+request_schema.json
+lambda.php
