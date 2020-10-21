@@ -1,0 +1,46 @@
+service: pack-calc
+
+provider:
+    name: aws
+    region: eu-west-1
+    runtime: provided
+    apiGateway:
+        apiKeySourceType: HEADER
+    apiKeys:
+        - public
+    usagePlan:
+        - public:
+            quota:
+                limit: 10000
+                period: MONTH
+            throttle:
+                rateLimit: 1
+
+plugins:
+    - ./vendor/bref/bref
+
+functions:
+    calculate:
+        handler: lambda.php
+        description: 'Calculates the required number of packs for a quantity of items'
+        timeout: 28 # in seconds (API Gateway has a timeout of 29 seconds)
+        layers:
+            - ${bref:layer.php-74}
+        events:
+            - http:
+                path: calculate
+                method: post
+                request:
+                    schema:
+                        application/json: ${file(request_schema.json)}
+                private: true
+
+# Exclude files from deployment
+package:
+    exclude:
+        - 'example/**'
+        - 'tests/**'
+        - 'var/**'
+        - '*.png'
+        - '*.md'
+        - 'Dockerfile'

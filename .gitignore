@@ -1,3 +1,5 @@
 vendor
 *.png
 !example/*.png
+var/*
+.serverless/

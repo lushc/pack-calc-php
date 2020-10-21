@@ -47,6 +47,34 @@ docker run --rm --entrypoint composer pack-calc tests
 
 Test cases used can be found in tests/PackCalcTest.php
 
+### Microservice deployment
+
+[Bref](https://bref.sh/) and the [Serverless framework](https://serverless.com/) are used for a microservice deployment. To deploy it:
+
+```
+npm install -g serverless
+serverless config credentials --provider aws --key <key> --secret <secret>
+serverless deploy
+```
+
+The API Gateway endpoint and API key will then be printed to console. The request path to use is `/calculate`.
+
+An example request would be:
+
+```
+curl -X POST \
+  -H "Content-Type: application/json" \
+  -H "X-Api-Key: example_key" \
+  -d '{"quantity": 12001, "packSizes": [250,500,1000,2000,5000]}' \
+  https://example.execute-api.eu-west-1.amazonaws.com/dev/calculate
+```
+
+The service responds with a JSON object describing the number of required pack sizes:
+
+```
+{"250":1,"2000":1,"5000":2}
+```
+
 ## Implementation
 
 ### Algorithm
