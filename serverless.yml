@@ -7,13 +7,15 @@ provider:
     apiGateway:
         apiKeySourceType: HEADER
     apiKeys:
-        - public
+        - public:
+            - publicKey
     usagePlan:
         - public:
             quota:
                 limit: 10000
                 period: MONTH
             throttle:
+                burstLimit: 10
                 rateLimit: 1
 
 plugins:
@@ -40,7 +42,6 @@ package:
     exclude:
         - 'example/**'
         - 'tests/**'
-        - 'var/**'
         - '*.png'
         - '*.md'
         - 'Dockerfile'

@@ -3,18 +3,6 @@
   "$schema": "http://json-schema.org/draft-04/schema#",
   "type": "object",
   "title": "Pack Calc Request Schema",
-  "examples": [
-    {
-        "quantity": 12001,
-        "packSizes": [
-            250,
-            500,
-            1000,
-            2000,
-            5000
-        ]
-    }
-  ],
   "required": ["quantity", "packSizes"],
   "properties": {
     "quantity": {

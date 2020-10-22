@@ -57,9 +57,7 @@ serverless config credentials --provider aws --key <key> --secret <secret>
 serverless deploy
 ```
 
-The API Gateway endpoint and API key will then be printed to console. The request path to use is `/calculate`.
-
-An example request would be:
+The API Gateway endpoint and API key will then be printed to console. An example request would be:
 
 ```
 curl -X POST \
